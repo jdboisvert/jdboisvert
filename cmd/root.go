@@ -5,26 +5,46 @@ package cmd
 
 import (
 	"os"
+	"os/exec"
+
+	"fmt"
 
 	"github.com/Delta456/box-cli-maker/v2"
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
+
+func handleSelection(result string) {
+	switch result {
+	case "Send Email":
+		fmt.Println("Opening your default email client...")
+		cmd := exec.Command("open", "mailto:info.jeffreyboisvert@gmail.com")
+
+		// Run the command and check for errors
+		err := cmd.Run()
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+
+	case "Play a Game":
+		fmt.Println("Alright lets play...")
+
+	case "Quit":
+		fmt.Println("Bye and have a great day!")
+	}
+}
 
 var rootCmd = &cobra.Command{
 	Use:   "jdboisvert",
 	Short: "A personal card for Jeffrey Boisvert (@jdboisvert)",
 	Long:  "jdboisvert is a personal card for Jeffrey Boisvert (@jdboisvert). This is a CLI application helps you to get to know me a little better and be able to better reach me.",
 	Run: func(cmd *cobra.Command, args []string) {
-		Box := box.New(box.Config{Px: 2, Py: 5, Type: "Double", Color: "Green", ContentAlign: "Center"})
+		Box := box.New(box.Config{Px: 4, Py: 1, Type: "Double", Color: "Cyan", ContentAlign: "Center"})
 		Box.Print(
 			"Jeffrey Boisvert (@jdboisvert)",
-			"Current Job: Staff Software Developer at Newton Crypto\n"+
-				"\n\n"+
-				"The Socials:\n"+
+			"Useful links:\n"+
 				"Linkedin: https://www.linkedin.com/in/jeffreybv/\n"+
 				"DEV: https://dev.to/jdvert\n"+
-				"\n\n"+
-				"The Code/Projects:\n"+
 				"PyPi: https://pypi.org/user/jdboisvert/\n"+
 				"GitHub: https://github.com/jdboisvert\n"+
 				"\n\n"+
@@ -38,6 +58,41 @@ var rootCmd = &cobra.Command{
 				"\n\n"+
 				"Thanks for checking out my card! Happy coding!",
 		)
+
+		quitText := "Quit"
+		sendEmailText := "Send Email"
+		downloadResumeText := "Play a Game"
+
+		prompt := promptui.Select{
+			Label: "So what do you want to do now?",
+			Items: []string{sendEmailText, downloadResumeText, quitText},
+		}
+
+		_, result, err := prompt.Run()
+
+		if err != nil {
+			fmt.Printf("Prompt failed %v\n", err)
+			return
+		}
+
+		handleSelection(result)
+
+		for result != "Quit" {
+			prompt = promptui.Select{
+				Label: "So what do you want to do now?",
+				Items: []string{sendEmailText, downloadResumeText, quitText},
+			}
+
+			_, result, err = prompt.Run()
+
+			if err != nil {
+				fmt.Printf("Prompt failed %v\n", err)
+				return
+			}
+
+			handleSelection(result)
+
+		}
 	},
 }
 
