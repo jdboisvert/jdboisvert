@@ -10,11 +10,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "jdboisvert",
 	Short: "A personal card for Jeffrey Boisvert (@jdboisvert)",
-	Long:  "jdboisvert is a personal card for Jeffrey Boisvert (@jdboisvert). This is a CLI application helps you to get to know me a little better.",
+	Long:  "jdboisvert is a personal card for Jeffrey Boisvert (@jdboisvert). This is a CLI application helps you to get to know me a little better and be able to better reach me.",
 	Run: func(cmd *cobra.Command, args []string) {
 		Box := box.New(box.Config{Px: 2, Py: 5, Type: "Double", Color: "Green", ContentAlign: "Center"})
 		Box.Print(

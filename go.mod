@@ -2,10 +2,12 @@ module github.com/jdboisvert/jdboisvert
 
 go 1.19
 
-require github.com/spf13/cobra v1.6.1
+require (
+	github.com/Delta456/box-cli-maker/v2 v2.3.0
+	github.com/spf13/cobra v1.6.1
+)
 
 require (
-	github.com/Delta456/box-cli-maker/v2 v2.3.0 // indirect
 	github.com/gookit/color v1.5.2 // indirect
 	github.com/huandu/xstrings v1.3.2 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
