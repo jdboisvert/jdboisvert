@@ -1,12 +1,9 @@
-# Hi there! I'm @jdboisvert!
-<p>
-    <em>
-        I'm a Software Developer at <a href="https://securityscorecard.com/">Newton Crypto</a>
-        </br>
-    </em>
-</p>
+## Hi there!
 
-## About Me
+I'm @jdboisvert and Software Developer at [Newton Crypto](https://www.newton.co/)
+
+
+### About Me
 Want to get to know me? Install my CLI and run `jdboisvert` in your terminal!
 
 <p align="center">
