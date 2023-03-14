@@ -1,5 +1,5 @@
 /*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
+Copyright © 2023 Jeffrey Boisvert info.jeffreyboisvert@gmail.com
 */
 package cmd
 
@@ -10,13 +10,22 @@ import (
 	"fmt"
 
 	"github.com/Delta456/box-cli-maker/v2"
+	"github.com/jdboisvert/jdboisvert/pkg"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
 
+const (
+	SendEmailText  = "Send Email"
+	TakeAQuizText  = "Take a Quiz"
+	QuitText       = "Quit"
+	PromptQuestion = "So what do you want to do now?"
+	ErrorText      = "So it seems you may have run into an issue :(. Please reach out and I can see how I can help you out!"
+)
+
 func handleSelection(result string) {
 	switch result {
-	case "Send Email":
+	case SendEmailText:
 		fmt.Println("Opening your default email client...")
 		cmd := exec.Command("open", "mailto:info.jeffreyboisvert@gmail.com")
 
@@ -26,11 +35,49 @@ func handleSelection(result string) {
 			fmt.Println("Error:", err)
 		}
 
-	case "Play a Game":
-		fmt.Println("Alright lets play...")
+	case TakeAQuizText:
+		fmt.Println("Alright good luck...")
+		pkg.QuizGameStart()
 
-	case "Quit":
+	case QuitText:
 		fmt.Println("Bye and have a great day!")
+	}
+}
+
+func getPromptResult() (string, error) {
+	prompt := promptui.Select{
+		Label: PromptQuestion,
+		Items: []string{SendEmailText, TakeAQuizText, QuitText},
+	}
+	_, result, err := prompt.Run()
+
+	if err != nil {
+		return "", err
+	}
+
+	return result, nil
+}
+
+func promptForSelection() {
+	// Prompt the user at least once
+	result, err := getPromptResult()
+
+	if err != nil {
+		fmt.Println(ErrorText)
+		return
+	}
+
+	handleSelection(result)
+
+	for result != QuitText {
+		result, err = getPromptResult()
+
+		if err != nil {
+			fmt.Println(ErrorText)
+			return
+		}
+
+		handleSelection(result)
 	}
 }
 
@@ -59,40 +106,7 @@ var rootCmd = &cobra.Command{
 				"Thanks for checking out my card! Happy coding!",
 		)
 
-		quitText := "Quit"
-		sendEmailText := "Send Email"
-		downloadResumeText := "Play a Game"
-
-		prompt := promptui.Select{
-			Label: "So what do you want to do now?",
-			Items: []string{sendEmailText, downloadResumeText, quitText},
-		}
-
-		_, result, err := prompt.Run()
-
-		if err != nil {
-			fmt.Printf("Prompt failed %v\n", err)
-			return
-		}
-
-		handleSelection(result)
-
-		for result != "Quit" {
-			prompt = promptui.Select{
-				Label: "So what do you want to do now?",
-				Items: []string{sendEmailText, downloadResumeText, quitText},
-			}
-
-			_, result, err = prompt.Run()
-
-			if err != nil {
-				fmt.Printf("Prompt failed %v\n", err)
-				return
-			}
-
-			handleSelection(result)
-
-		}
+		promptForSelection()
 	},
 }
 
@@ -103,16 +117,4 @@ func Execute() {
 	if err != nil {
 		os.Exit(1)
 	}
-}
-
-func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.jdboisvert.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
