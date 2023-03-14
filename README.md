@@ -1,6 +1,10 @@
 ## Hi there!
 
-I'm @jdboisvert and Software Developer at [Newton Crypto](https://www.newton.co/)
+I'm @jdboisvert and I'm a
+- Software Developer at [Newton Crypto](https://www.newton.co/)
+- Coffee Lover 🤤
+- DIYer 🛠️ (Be it fixing my car or building own software)
+- Hiker 🥾
 
 
 ### About Me
